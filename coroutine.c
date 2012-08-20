@@ -131,6 +131,7 @@ coroutine_resume(struct schedule * S, int id) {
 		C->ctx.uc_link = &S->main;
 		S->running = id;
 		C->status = COROUTINE_RUNNING;
+        memset(S->stack, 0, STACK_SIZE);
 		uintptr_t ptr = (uintptr_t)S;
 		makecontext(&C->ctx, (void (*)(void)) mainfunc, 2, (uint32_t)ptr, (uint32_t)(ptr>>32));
 		swapcontext(&S->main, &C->ctx);
